@@ -21,15 +21,17 @@ x_star = Height(80:100);
 % to confirm the size of x_star
 x_star_size = size(x_star);
 n_star = x_star_size(1,1);
-% augment oos i/p data
+% augment i/p data
 Psi_star = [ones(n_star,1) x_star];
 
 % predict using the weights(theta_hat) computed above
 y_star_hat = Psi_star*theta_hat; 
-plot(x, y, '.', x_star, y_star_hat, '.')
-xlabel('Height (in)')
-ylabel('Weight (lbs)')
-legend({'orginal data','prediction'},'Location','southwest')
+
+% visualise
+plot(x, y, '.', x_star, y_star_hat, '.');
+xlabel('Height (in)');
+ylabel('Weight (lbs)');
+legend({'orginal data','prediction'},'Location','southwest');
 
 
 

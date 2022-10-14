@@ -1,12 +1,15 @@
-% Sample code for linear regression
-% Predict patient weight from age
+% Sample code for multi-variable linear regression
+% Predict patient weight from height and age
+
+clc;
+clear;
 
 % Load patients data from matlab sample data sets
 load patients;
 
-% Weight and Age items have 100 data samples
+% Height and Weight items have 100 data samples
 % Split the data in 80:20 (train:validate)
-x = Age(1:80);
+x = [Height(1:80) Age(1:80)];   % multi-variate input
 y = Weight(1:80);
 
 % Eqn: y = 𝜃̂0x0 + 𝜃̂1x1
@@ -17,20 +20,27 @@ theta_hat = inv(Psi'*Psi)*Psi'*y;
 
 % ******* Prediction *********
 % use the last 20 data items for prediction
-x_star = Age(80:100); 
+x_star = [Height(80:100) Age(80:100)]; 
 % to confirm the size of x_star
 x_star_size = size(x_star);
 n_star = x_star_size(1,1);
 % augment i/p data
 Psi_star = [ones(n_star,1) x_star];
 
-% predict using the age (theta_hat) computed above
+% predict using the weights(theta_hat) computed above
 y_star_hat = Psi_star*theta_hat; 
 
 % visualise
-plot(x, y, '.', x_star, y_star_hat, '.')
-xlabel('Age');
-ylabel('Weight (lbs)');
+figure
+scatter3(x,y);
+hold on;
+scatter3(x_star, y_star_hat);
+hold off;
+
+plot(x, y, '.', x_star, y_star_hat, '.');
+xlabel('Height (in)');
+ylabel('Age');
+zla
 legend({'orginal data','prediction'},'Location','southwest');
 
 
