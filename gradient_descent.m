@@ -1,0 +1,41 @@
+% Gradient Descent algorithm for linear regression
+
+clear;
+clc;
+
+% Sample Data
+no_data_points = 100;
+X = 2 * rand(no_data_points, 1);
+y = 4 + 3 * X + randn(no_data_points, 1);
+plot(X,y, '.')
+xlabel('X');
+ylabel('y');
+
+% Add bias term
+X_b = [ones(no_data_points,1), X] ; %Adding a bias 'b' of one to each instance
+X_b_transpose = transpose(X_b); %transpose x_b
+
+%Let us try with gradient descent algorithm
+eta = 0.005; % learning rate. Play with various values of the learning rate eta
+n_iterations = 1000 ;
+m = no_data_points;
+theta = rand(2, 1) * 10; % random initialization of theta start theta from a large value
+theta_iteration = []; %create array for storing the data
+for iteration = 1:n_iterations
+ gradients = 2/m * (X_b_transpose*((X_b*theta) - y)) ;
+ theta = theta - eta * gradients;
+ theta_iteration(iteration,1) = theta(1,1);
+ theta_iteration(iteration,2) = theta(2,1);
+end
+
+figure
+plot3(1:n_iterations,theta_iteration(:,1), theta_iteration(:,2), '.');
+xlabel('learning epoch');
+ylabel('\theta_1');
+zlabel('\theta_2');
+legend('Gradient descent curve')
+%plot the trajectory of theta towards minimum
+figure
+plot(1:n_iterations, theta_iteration(:,1), '.')
+hold on
+plot(1:n_iterations, theta_iteration(:,2), '.')

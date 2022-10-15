@@ -1,16 +1,19 @@
 % Sample code for multi-variable linear regression
-% Predict patient weight from height and age
+% Predict a car's MPG(miles/gallon) from Horsepower
 
 clc;
-clear;
 
-% Load patients data from matlab sample data sets
-load patients;
+% Load carbig data from matlab sample data sets
+load carbig;
 
-% Height and Weight items have 100 data samples
-% Split the data in 80:20 (train:validate)
-x = [Height(1:80) Age(1:80)];   % multi-variate input
-y = Weight(1:80);
+% Fix: Some values are NaN in horsepower & MPG
+Horsepower = fillmissing(Horsepower, "constant", 0);
+MPG = fillmissing(MPG, "constant", 0);
+
+% Horsepower, Weight and MPG items have 406 data samples
+% Split the data in 300:106 (train:validate)
+x = [Horsepower(1:300) Weight(1:300)];
+y = MPG(1:300);
 
 % Eqn: y = 𝜃̂0x0 + 𝜃̂1x1
 % Compute weights: Find 𝜃̂ = (𝜓𝑇𝜓)^(−1)𝜓𝑇y
@@ -19,8 +22,8 @@ Psi = [ones(n(1,1),1), x];  % Augment i/p data - the column of ones represent bi
 theta_hat = inv(Psi'*Psi)*Psi'*y;
 
 % ******* Prediction *********
-% use the last 20 data items for prediction
-x_star = [Height(80:100) Age(80:100)]; 
+% use the last 106 data items for prediction
+x_star = [Horsepower(301:406) Weight(301:406)]; 
 % to confirm the size of x_star
 x_star_size = size(x_star);
 n_star = x_star_size(1,1);
@@ -31,16 +34,13 @@ Psi_star = [ones(n_star,1) x_star];
 y_star_hat = Psi_star*theta_hat; 
 
 % visualise
-figure
-% Plot the training set
-scatter3(Height(1:80),Age(1:80), y);
+figure;
+scatter3(x(:,1), x(:,2), y);
 hold on;
-% Plot the validation set
-scatter3(Height(80:100),Age(80:100), y_star_hat);
-hold off;
-xlabel('Height (in)');
-ylabel('Age');
-zlabel('Weight (lbs)')
+scatter3(x_star(:,1), x_star(:,2), y_star_hat);
+xlabel('Horsepower');
+ylabel('Weight of car');
+zlabel('MPG');
 legend({'orginal data','prediction'},'Location','southwest');
 
 
