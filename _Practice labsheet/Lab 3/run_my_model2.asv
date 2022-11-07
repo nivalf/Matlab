@@ -1,0 +1,25 @@
+%Script to set the step time, step values, saturation value
+% and run the model 'my_model2'
+
+clear;
+
+%Predefined values
+step_time = 0;
+step_low_value = 0;
+step_high_value = 1;
+lower_sat = -1;
+upper_sat = 1;
+k = 1;  % gain
+
+for b = [1,2,4]   % value of b in transfer function
+    sim('my_model2')    % run the model
+    plot(simout);
+    hold on;
+end
+
+hold off;
+grid on;
+legend('b=1','b');
+xlabel('Time');
+ylabel('Model Output')
+title('Results from model2')
